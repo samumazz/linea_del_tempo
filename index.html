@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cronologia Storica (1517 - 1648)</title>
+  <title>Cronologia Storica (1515 - 1680)</title>
   <style>
     * {
       box-sizing: border-box;
@@ -136,8 +136,17 @@
 
     .timeline-canvas {
       position: relative;
-      height: 600px;
+      height: 640px;
       margin: 0 40px;
+    }
+
+    /* Separatori visivi tra nazioni */
+    .nation-lane-bg {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+      pointer-events: none;
     }
 
     /* Griglia anni */
@@ -155,7 +164,7 @@
 
     .year-label {
       position: absolute;
-      top: 295px;
+      top: 325px;
       transform: translateX(-50%);
       background: #2d2d30;
       color: #e4e4e7;
@@ -172,7 +181,7 @@
       position: absolute;
       left: 0;
       right: 0;
-      top: 307px;
+      top: 337px;
       height: 2px;
       background: #52525b;
       z-index: 2;
@@ -181,15 +190,15 @@
     /* Barre Periodi e Governi */
     .period-bar {
       position: absolute;
-      height: 32px;
-      border-radius: 7px;
-      padding: 0 10px;
+      height: 28px;
+      border-radius: 6px;
+      padding: 0 9px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
       color: #ffffff;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
@@ -214,7 +223,7 @@
     }
 
     .period-years {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       opacity: 0.92;
       font-weight: 500;
       flex-shrink: 0;
@@ -223,7 +232,7 @@
     /* Eventi Puntuali (Sotto l'asse) */
     .event-marker {
       position: absolute;
-      top: 308px;
+      top: 338px;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
@@ -365,7 +374,7 @@
 
   <header>
     <div>
-      <h1>Cronologia Storica (1517 - 1648)</h1>
+      <h1>Cronologia Storica (1515 - 1680)</h1>
       <p class="subtitle">Clicca su qualsiasi periodo o evento per visualizzare la descrizione</p>
     </div>
     <div class="zoom-controls">
@@ -378,19 +387,19 @@
   <main>
     <div class="timeline-card">
       <div class="timeline-topbar">
-        <span>Scorri orizzontalmente per esplorare gli anni dal 1517 al 1648</span>
+        <span>Scorri orizzontalmente per esplorare gli anni dal 1515 al 1680</span>
         <div class="legend">
           <div class="legend-item">
             <span class="legend-swatch" style="background: #6c8453;"></span>
-            <span>Impero / Germania</span>
+            <span>Impero/Germania</span>
           </div>
           <div class="legend-item">
             <span class="legend-swatch" style="background: #8a568e;"></span>
-            <span>Chiesa / Concilio</span>
+            <span>Stato della Chiesa</span>
           </div>
           <div class="legend-item">
             <span class="legend-swatch" style="background: #a38348;"></span>
-            <span>Spagna / Paesi Bassi</span>
+            <span>Spagna</span>
           </div>
           <div class="legend-item">
             <span class="legend-swatch" style="background: #28568f;"></span>
@@ -424,11 +433,12 @@
 
   <script>
     const START_YEAR = 1515;
-    const END_YEAR = 1652;
-    let pixelsPerYear = 14;
+    const END_YEAR = 1680;
+    let pixelsPerYear = 13;
 
-    // Solo i 13 periodi presenti nell'immagine
+    // Periodi raggruppati per nazione/area in corsie esclusive (zero sovrapposizioni)
     const periodi = [
+      // --- AREA 1: IMPERO / GERMANIA (Corsie 0 e 1) ---
       {
         titolo: "Riforma luterana",
         inizio: 1517,
@@ -436,6 +446,14 @@
         corsia: 0,
         colore: "#6c8453",
         descrizione: "Avvio della frattura religiosa in Germania con le tesi di Martin Lutero fino alla Dieta di Worms e alla sua scomunica."
+      },
+      {
+        titolo: "Epoca della confessionalizzazione e tensioni nell'Impero",
+        inizio: 1555,
+        fine: 1618,
+        corsia: 0,
+        colore: "#6c8453",
+        descrizione: "Periodo compreso tra la Pace di Augusta e lo scoppio della Guerra dei Trent'anni, caratterizzato dalla definizione delle confessioni religiose e crescenti tensioni politiche nell'Impero."
       },
       {
         titolo: "Impero di Carlo V",
@@ -446,21 +464,15 @@
         descrizione: "Regno di Carlo V d'Asburgo su un vasto impero europeo e coloniale, segnato dalla Riforma protestante e dalle guerre contro Francia e Ottomani."
       },
       {
-        titolo: "Epoca della confessionalizzazione e tensioni nell'Impero",
-        inizio: 1555,
-        fine: 1618,
-        corsia: 1,
-        colore: "#6c8453",
-        descrizione: "Periodo tra la Pace di Augusta e lo scoppio della Guerra dei Trent'anni caratterizzato dal consolidamento delle diverse confessioni religiose e da crescenti tensioni politiche."
-      },
-      {
         titolo: "Guerra dei Trent'anni",
         inizio: 1618,
         fine: 1648,
-        corsia: 0,
+        corsia: 1,
         colore: "#6c8453",
         descrizione: "Conflitto europeo iniziato come scontro religioso nell'Impero germanico e trasformatosi in guerra per l'egemonia continentale fino alla Pace di Vestfalia."
       },
+
+      // --- AREA 2: CHIESA / CONCILIO (Corsia 2) ---
       {
         titolo: "Concilio di Trento e Controriforma",
         inizio: 1545,
@@ -469,6 +481,8 @@
         colore: "#8a568e",
         descrizione: "Concilio ecumenico convocato dalla Chiesa cattolica per riaffermare i dogmi tradizionali e riorganizzare la disciplina ecclesiastica in risposta al protestantesimo."
       },
+
+      // --- AREA 3: SPAGNA / PAESI BASSI (Corsie 3 e 4) ---
       {
         titolo: "Regno di Filippo II",
         inizio: 1556,
@@ -483,13 +497,15 @@
         fine: 1581,
         corsia: 4,
         colore: "#a38348",
-        descrizione: "Insurrezione delle province dei Paesi Bassi contro il dominio e la pressione fiscale e religiosa di Filippo II di Spagna, culminata nella dichiarazione d'indipendenza delle Province Unite."
+        descrizione: "Insurrezione delle province dei Paesi Bassi contro il dominio e la pressione fiscale e religiosa di Filippo II di Spagna, culminata nella dichiarazione d'indipendenza."
       },
+
+      // --- AREA 4: INGHILTERRA (Corsia 5 - sequenza continua senza sovrapposizioni) ---
       {
         titolo: "Fase della Riforma e regno dei Tudor",
         inizio: 1534,
         fine: 1558,
-        corsia: 2,
+        corsia: 5,
         colore: "#28568f",
         descrizione: "Periodo che va dallo scisma anglicano di Enrico VIII ai brevi regni di Edoardo VI e Maria I la Cattolica, segnato da profondi mutamenti religiosi in Inghilterra."
       },
@@ -497,23 +513,25 @@
         titolo: "Epoca elisabettiana",
         inizio: 1558,
         fine: 1603,
-        corsia: 4,
+        corsia: 5,
         colore: "#28568f",
         descrizione: "Regno di Elisabetta I, caratterizzato dal consolidamento dell'anglicanesimo, dalla fioritura culturale ed economica e dall'ascesa marittima dell'Inghilterra."
       },
+
+      // --- AREA 5: FRANCIA (Corsia 6 - sequenza continua senza sovrapposizioni) ---
       {
         titolo: "Guerre di religione in Francia",
         inizio: 1562,
         fine: 1598,
-        corsia: 5,
+        corsia: 6,
         colore: "#9f494c",
-        descrizione: "Conflitti civili tra cattolici e ugonotti (calvinisti francesi) che sconvolgono la Francia fino alla promulgazione dell'Editto di Nantes."
+        descrizione: "Conflitti civili tra cattolici e ugonotti (calvinisti francesi) che sconvolsero la Francia fino alla promulgazione dell'Editto di Nantes."
       },
       {
         titolo: "Regno di Enrico IV",
         inizio: 1598,
         fine: 1610,
-        corsia: 5,
+        corsia: 6,
         colore: "#9f494c",
         descrizione: "Primo sovrano della dinastia dei Borbone: pacifica il regno dopo le guerre di religione e avvia la ricostruzione economica della Francia."
       },
@@ -521,7 +539,7 @@
         titolo: "Regno di Maria de' Medici e successivamente di Luigi XIII",
         inizio: 1610,
         fine: 1624,
-        corsia: 4,
+        corsia: 6,
         colore: "#9f494c",
         descrizione: "Periodo della reggenza di Maria de' Medici e dei primi anni di governo personale di Luigi XIII, segnato da instabilità interna prima dell'ascesa di Richelieu."
       },
@@ -529,18 +547,18 @@
         titolo: "Governo di Richelieu e assolutismo",
         inizio: 1624,
         fine: 1642,
-        corsia: 5,
+        corsia: 6,
         colore: "#9f494c",
         descrizione: "Azione politica del cardinale Richelieu come primo ministro di Luigi XIII volta a rafforzare il potere assoluto della monarchia francese e ridimensionare gli Asburgo."
       }
     ];
 
-    // Solo gli 8 eventi puntuali presenti nell'immagine
+    // Tutti gli 8 eventi puntuali presenti nella foto di riferimento
     const eventi = [
       {
         anno: 1517,
         dataEtichetta: "1517-10-31",
-        titolo: "Martin Lutero affigge le 95 tesi",
+        titolo: "Martin Lutero affige le 95 tesi",
         livello: 0,
         colore: "#6c8453",
         descrizione: "Il 31 ottobre 1517 Martin Lutero rende note a Wittenberg le 95 tesi contro la vendita delle indulgenze, dando inizio alla Riforma protestante."
@@ -597,7 +615,7 @@
         anno: 1648,
         dataEtichetta: "1648",
         titolo: "Pace di Vestfalia",
-        livello: 0,
+        livello: 2,
         colore: "#6c8453",
         descrizione: "Insieme di trattati che pongono fine alla Guerra dei Trent'anni e ridisegnano gli equilibri politici e religiosi europei."
       }
@@ -628,12 +646,21 @@
       const totalWidth = (END_YEAR - START_YEAR) * pixelsPerYear;
       canvas.style.width = totalWidth + "px";
 
+      // Linee sottili di separazione tra le fasce delle nazioni (dopo corsia 1, 2, 4, 5)
+      const groupDividers = [1, 2, 4, 5];
+      groupDividers.forEach((laneIdx) => {
+        const divider = document.createElement("div");
+        divider.className = "nation-lane-bg";
+        divider.style.top = (14 + laneIdx * 42 + 34) + "px";
+        canvas.appendChild(divider);
+      });
+
       // Asse centrale
       const axis = document.createElement("div");
       axis.className = "central-axis";
       canvas.appendChild(axis);
 
-      // Tacche anni
+      // Tacche anni (ogni 5 anni, etichetta ogni 10)
       for (let year = START_YEAR; year <= END_YEAR; year += 5) {
         const x = (year - START_YEAR) * pixelsPerYear;
         const isMajor = year % 10 === 0;
@@ -643,7 +670,7 @@
         tick.style.left = x + "px";
         canvas.appendChild(tick);
 
-        if (isMajor || pixelsPerYear >= 17) {
+        if (isMajor || pixelsPerYear >= 18) {
           const label = document.createElement("div");
           label.className = "year-label";
           label.style.left = x + "px";
@@ -656,7 +683,7 @@
       periodi.forEach((p) => {
         const left = (p.inizio - START_YEAR) * pixelsPerYear;
         const width = Math.max((p.fine - p.inizio) * pixelsPerYear, 36);
-        const top = 16 + p.corsia * 44;
+        const top = 14 + p.corsia * 42;
 
         const bar = document.createElement("div");
         bar.className = "period-bar";
@@ -686,7 +713,7 @@
       // Eventi puntuali (sotto l'asse)
       eventi.forEach((ev) => {
         const left = (ev.anno - START_YEAR) * pixelsPerYear;
-        const stemHeights = [24, 96, 168];
+        const stemHeights = [24, 92, 160];
         const stemHeight = stemHeights[ev.livello] || 24;
 
         const marker = document.createElement("div");
@@ -695,4 +722,58 @@
 
         marker.innerHTML = `
           <div class="event-dot" style="background: ${ev.colore}; box-shadow: 0 0 0 2px ${ev.colore};"></div>
-          <div class="event-
+          <div class="event-stem" style="height: ${stemHeight}px;"></div>
+          <div class="event-card" style="border-left-color: ${ev.colore};">
+            <div class="event-year" style="color: ${ev.colore}; filter: brightness(1.35);">${ev.dataEtichetta}</div>
+            <div class="event-name">${ev.titolo}</div>
+          </div>
+        `;
+
+        marker.addEventListener("click", () => {
+          openModal(ev.dataEtichetta, ev.colore, ev.titolo, ev.descrizione);
+        });
+
+        canvas.appendChild(marker);
+      });
+    }
+
+    document.getElementById("zoomIn").addEventListener("click", () => {
+      pixelsPerYear = Math.min(28, pixelsPerYear + 3);
+      renderTimeline();
+    });
+
+    document.getElementById("zoomOut").addEventListener("click", () => {
+      pixelsPerYear = Math.max(8, pixelsPerYear - 3);
+      renderTimeline();
+    });
+
+    document.getElementById("zoomReset").addEventListener("click", () => {
+      pixelsPerYear = 13;
+      renderTimeline();
+    });
+
+    // Scorrimento con trascinamento mouse
+    const scrollBox = document.getElementById("timelineScroll");
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    scrollBox.addEventListener("mousedown", (e) => {
+      isDown = true;
+      startX = e.pageX - scrollBox.offsetLeft;
+      scrollLeft = scrollBox.scrollLeft;
+    });
+    scrollBox.addEventListener("mouseleave", () => (isDown = false));
+    scrollBox.addEventListener("mouseup", () => (isDown = false));
+    scrollBox.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scrollBox.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      scrollBox.scrollLeft = scrollLeft - walk;
+    });
+
+    renderTimeline();
+  </script>
+</body>
+</html>
