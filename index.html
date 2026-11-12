@@ -136,7 +136,7 @@
 
     .timeline-canvas {
       position: relative;
-      height: 530px;
+      height: 600px;
       margin: 0 40px;
     }
 
@@ -155,7 +155,7 @@
 
     .year-label {
       position: absolute;
-      top: 235px;
+      top: 295px;
       transform: translateX(-50%);
       background: #2d2d30;
       color: #e4e4e7;
@@ -172,24 +172,24 @@
       position: absolute;
       left: 0;
       right: 0;
-      top: 247px;
+      top: 307px;
       height: 2px;
       background: #52525b;
       z-index: 2;
     }
 
-    /* Barre Periodi e Governi (Proporzionali) */
+    /* Barre Periodi e Governi */
     .period-bar {
       position: absolute;
-      height: 36px;
-      border-radius: 8px;
-      padding: 0 11px;
+      height: 32px;
+      border-radius: 7px;
+      padding: 0 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
       color: #ffffff;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
@@ -214,7 +214,7 @@
     }
 
     .period-years {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       opacity: 0.92;
       font-weight: 500;
       flex-shrink: 0;
@@ -223,7 +223,7 @@
     /* Eventi Puntuali (Sotto l'asse) */
     .event-marker {
       position: absolute;
-      top: 248px;
+      top: 308px;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
@@ -233,8 +233,8 @@
     }
 
     .event-dot {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
       border: 3px solid #242426;
       margin-top: -6px;
@@ -255,8 +255,8 @@
       border: 1px solid #3f3f46;
       border-left-width: 4px;
       border-radius: 6px;
-      padding: 6px 10px;
-      width: 158px;
+      padding: 6px 9px;
+      width: 155px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
       transition: transform 0.15s, background-color 0.15s;
     }
@@ -273,7 +273,7 @@
     }
 
     .event-name {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
       color: #f4f4f5;
       line-height: 1.25;
@@ -366,7 +366,7 @@
   <header>
     <div>
       <h1>Cronologia Storica (1517 - 1648)</h1>
-      <p class="subtitle">Clicca su qualsiasi periodo o evento per visualizzare il dettaglio</p>
+      <p class="subtitle">Clicca su qualsiasi periodo o evento per visualizzare la descrizione</p>
     </div>
     <div class="zoom-controls">
       <button class="zoom-btn" id="zoomOut">− Riduci</button>
@@ -390,7 +390,7 @@
           </div>
           <div class="legend-item">
             <span class="legend-swatch" style="background: #a38348;"></span>
-            <span>Spagna</span>
+            <span>Spagna / Paesi Bassi</span>
           </div>
           <div class="legend-item">
             <span class="legend-swatch" style="background: #28568f;"></span>
@@ -424,140 +424,182 @@
 
   <script>
     const START_YEAR = 1515;
-    const END_YEAR = 1650;
-    let pixelsPerYear = 13;
+    const END_YEAR = 1652;
+    let pixelsPerYear = 14;
 
-    // Colori estratti dall'immagine di riferimento:
-    // Verde oliva (Impero/Riforma): #6c8453
-    // Viola (Concilio di Trento): #8a568e
-    // Ocra/Oro (Spagna/Asburgo di Spagna): #a38348
-    // Blu (Inghilterra): #28568f
-    // Rosso corallo/bordeaux (Francia): #9f494c
-
+    // Solo i 13 periodi presenti nell'immagine
     const periodi = [
       {
-        titolo: "Regno di Carlo V d'Asburgo",
-        inizio: 1519,
-        fine: 1556,
+        titolo: "Riforma luterana",
+        inizio: 1517,
+        fine: 1521,
         corsia: 0,
         colore: "#6c8453",
-        descrizione: "Carlo V governa un impero vastissimo che comprende Spagna, Paesi Bassi, possedimenti italiani, Germania e colonie americane, affrontando la Riforma protestante e le guerre d'Italia fino all'abdicazione del 1556."
+        descrizione: "Avvio della frattura religiosa in Germania con le tesi di Martin Lutero fino alla Dieta di Worms e alla sua scomunica."
       },
       {
-        titolo: "Regno di Filippo II",
-        inizio: 1556,
-        fine: 1598,
-        corsia: 0,
-        colore: "#a38348",
-        descrizione: "Figlio di Carlo V, eredita la corona di Spagna e i domini coloniali e italiani. Difensore del cattolicesimo, affronta la rivolta dei Paesi Bassi, l'Impero Ottomano e l'Inghilterra."
-      },
-      {
-        titolo: "Governo di Richelieu",
-        inizio: 1624,
-        fine: 1644,
-        corsia: 0,
-        colore: "#9f494c",
-        descrizione: "Primo ministro di Luigi XIII dal 1624 (e influenza diretta fino al 1644). Rafforza l'assolutismo monarchico in Francia, riduce il potere politico degli ugonotti e interviene nella Guerra dei Trent'anni contro gli Asburgo."
-      },
-      {
-        titolo: "Regno di Elisabetta I",
-        inizio: 1558,
-        fine: 1603,
+        titolo: "Impero di Carlo V",
+        inizio: 1519,
+        fine: 1556,
         corsia: 1,
-        colore: "#28568f",
-        descrizione: "Consolida la Chiesa anglicana, promuove lo sviluppo marittimo e commerciale dell'Inghilterra e sconfigge l'Invincibile Armata spagnola nel 1588."
+        colore: "#6c8453",
+        descrizione: "Regno di Carlo V d'Asburgo su un vasto impero europeo e coloniale, segnato dalla Riforma protestante e dalle guerre contro Francia e Ottomani."
+      },
+      {
+        titolo: "Epoca della confessionalizzazione e tensioni nell'Impero",
+        inizio: 1555,
+        fine: 1618,
+        corsia: 1,
+        colore: "#6c8453",
+        descrizione: "Periodo tra la Pace di Augusta e lo scoppio della Guerra dei Trent'anni caratterizzato dal consolidamento delle diverse confessioni religiose e da crescenti tensioni politiche."
       },
       {
         titolo: "Guerra dei Trent'anni",
         inizio: 1618,
         fine: 1648,
-        corsia: 1,
+        corsia: 0,
         colore: "#6c8453",
-        descrizione: "Conflitto europeo iniziato come scontro religioso nell'Impero germanico e trasformatosi in guerra per l'egemonia continentale tra Asburgo e Francia, concluso con la Pace di Vestfalia."
+        descrizione: "Conflitto europeo iniziato come scontro religioso nell'Impero germanico e trasformatosi in guerra per l'egemonia continentale fino alla Pace di Vestfalia."
       },
       {
-        titolo: "Concilio di Trento",
+        titolo: "Concilio di Trento e Controriforma",
         inizio: 1545,
         fine: 1563,
         corsia: 2,
         colore: "#8a568e",
-        descrizione: "Concilio ecumenico convocato per rispondere alla Riforma protestante: definisce i dogmi cattolici e avvia la Controriforma."
+        descrizione: "Concilio ecumenico convocato dalla Chiesa cattolica per riaffermare i dogmi tradizionali e riorganizzare la disciplina ecclesiastica in risposta al protestantesimo."
+      },
+      {
+        titolo: "Regno di Filippo II",
+        inizio: 1556,
+        fine: 1598,
+        corsia: 3,
+        colore: "#a38348",
+        descrizione: "Governo del sovrano spagnolo, difensore dell'ortodossia cattolica, impegnato contro l'Impero Ottomano, i ribelli dei Paesi Bassi e l'Inghilterra."
+      },
+      {
+        titolo: "Rivolta dei Paesi Bassi",
+        inizio: 1566,
+        fine: 1581,
+        corsia: 4,
+        colore: "#a38348",
+        descrizione: "Insurrezione delle province dei Paesi Bassi contro il dominio e la pressione fiscale e religiosa di Filippo II di Spagna, culminata nella dichiarazione d'indipendenza delle Province Unite."
+      },
+      {
+        titolo: "Fase della Riforma e regno dei Tudor",
+        inizio: 1534,
+        fine: 1558,
+        corsia: 2,
+        colore: "#28568f",
+        descrizione: "Periodo che va dallo scisma anglicano di Enrico VIII ai brevi regni di Edoardo VI e Maria I la Cattolica, segnato da profondi mutamenti religiosi in Inghilterra."
+      },
+      {
+        titolo: "Epoca elisabettiana",
+        inizio: 1558,
+        fine: 1603,
+        corsia: 4,
+        colore: "#28568f",
+        descrizione: "Regno di Elisabetta I, caratterizzato dal consolidamento dell'anglicanesimo, dalla fioritura culturale ed economica e dall'ascesa marittima dell'Inghilterra."
       },
       {
         titolo: "Guerre di religione in Francia",
         inizio: 1562,
         fine: 1598,
-        corsia: 2,
+        corsia: 5,
         colore: "#9f494c",
-        descrizione: "Serie di otto conflitti civili tra cattolici e ugonotti (calvinisti francesi), culminati nella notte di San Bartolomeo e risolti con l'Editto di Nantes."
+        descrizione: "Conflitti civili tra cattolici e ugonotti (calvinisti francesi) che sconvolgono la Francia fino alla promulgazione dell'Editto di Nantes."
       },
       {
-        titolo: "Governo del Conte-Duca di Olivares",
-        inizio: 1621,
-        fine: 1643,
-        corsia: 2,
-        colore: "#a38348",
-        descrizione: "Valido di Filippo IV di Spagna, tenta di centralizzare l'impero spagnolo e sostenere lo sforzo bellico nella Guerra dei Trent'anni."
+        titolo: "Regno di Enrico IV",
+        inizio: 1598,
+        fine: 1610,
+        corsia: 5,
+        colore: "#9f494c",
+        descrizione: "Primo sovrano della dinastia dei Borbone: pacifica il regno dopo le guerre di religione e avvia la ricostruzione economica della Francia."
+      },
+      {
+        titolo: "Regno di Maria de' Medici e successivamente di Luigi XIII",
+        inizio: 1610,
+        fine: 1624,
+        corsia: 4,
+        colore: "#9f494c",
+        descrizione: "Periodo della reggenza di Maria de' Medici e dei primi anni di governo personale di Luigi XIII, segnato da instabilità interna prima dell'ascesa di Richelieu."
+      },
+      {
+        titolo: "Governo di Richelieu e assolutismo",
+        inizio: 1624,
+        fine: 1642,
+        corsia: 5,
+        colore: "#9f494c",
+        descrizione: "Azione politica del cardinale Richelieu come primo ministro di Luigi XIII volta a rafforzare il potere assoluto della monarchia francese e ridimensionare gli Asburgo."
       }
     ];
 
-    // Eventi puntuali sotto l'asse con colore abbinato all'area storica
+    // Solo gli 8 eventi puntuali presenti nell'immagine
     const eventi = [
       {
         anno: 1517,
-        titolo: "95 Tesi di Lutero",
+        dataEtichetta: "1517-10-31",
+        titolo: "Martin Lutero affigge le 95 tesi",
         livello: 0,
         colore: "#6c8453",
-        descrizione: "Martin Lutero affigge a Wittenberg le 95 tesi contro la vendita delle indulgenze, dando inizio alla Riforma protestante."
+        descrizione: "Il 31 ottobre 1517 Martin Lutero rende note a Wittenberg le 95 tesi contro la vendita delle indulgenze, dando inizio alla Riforma protestante."
       },
       {
-        anno: 1527,
-        titolo: "Sacco di Roma",
+        anno: 1534,
+        dataEtichetta: "1534",
+        titolo: "Atto di Supremazia di Enrico VIII",
         livello: 1,
-        colore: "#6c8453",
-        descrizione: "I lanzichenecchi al servizio di Carlo V saccheggiano Roma, segnando un punto di svolta nelle guerre d'Italia."
+        colore: "#28568f",
+        descrizione: "Il Parlamento inglese riconosce re Enrico VIII come Capo Supremo della Chiesa d'Inghilterra, sancendo lo scisma da Roma."
       },
       {
         anno: 1555,
+        dataEtichetta: "1555",
         titolo: "Pace di Augusta",
         livello: 0,
         colore: "#6c8453",
-        descrizione: "Sancisce il principio 'cuius regio, eius religio' nell'Impero germanico tra principi cattolici e luterani."
+        descrizione: "Accordo firmato nell'Impero germanico che stabilisce il principio 'cuius regio, eius religio' tra principi cattolici e luterani."
       },
       {
         anno: 1571,
+        dataEtichetta: "1571-10-07",
         titolo: "Battaglia di Lepanto",
         livello: 1,
         colore: "#a38348",
-        descrizione: "La flotta della Lega Santa sconfigge la flotta dell'Impero Ottomano nel golfo di Patrasso."
+        descrizione: "Il 7 ottobre 1571 la flotta cristiana della Lega Santa, guidata dalla Spagna, sconfigge la flotta dell'Impero Ottomano."
+      },
+      {
+        anno: 1572,
+        dataEtichetta: "1572",
+        titolo: "Strage di san Bartolomeo",
+        livello: 2,
+        colore: "#9f494c",
+        descrizione: "Massacro degli ugonotti a Parigi e in altre città francesi durante le guerre di religione."
       },
       {
         anno: 1588,
-        titolo: "Invincibile Armata",
+        dataEtichetta: "1588",
+        titolo: "Sconfitta dell'Invincibile Armata",
         livello: 0,
         colore: "#28568f",
-        descrizione: "La flotta spagnola inviata da Filippo II contro l'Inghilterra di Elisabetta I viene sconfitta."
+        descrizione: "La grande flotta spagnola inviata da Filippo II per invadere l'Inghilterra viene sconfitta dalla marina inglese di Elisabetta I."
       },
       {
         anno: 1598,
+        dataEtichetta: "1598",
         titolo: "Editto di Nantes",
         livello: 1,
         colore: "#9f494c",
-        descrizione: "Enrico IV concede libertà di culto agli ugonotti in Francia, ponendo fine alle guerre di religione."
-      },
-      {
-        anno: 1628,
-        titolo: "Presa di La Rochelle",
-        livello: 0,
-        colore: "#9f494c",
-        descrizione: "Richelieu espugna la principale piazzaforte ugonotta in Francia, eliminando l'autonomia politica dei protestanti."
+        descrizione: "Decreto emanato da Enrico IV che concede libertà di culto e garanzie politiche agli ugonotti, chiudendo le guerre di religione in Francia."
       },
       {
         anno: 1648,
+        dataEtichetta: "1648",
         titolo: "Pace di Vestfalia",
-        livello: 1,
+        livello: 0,
         colore: "#6c8453",
-        descrizione: "Pone fine alla Guerra dei Trent'anni, ridisegna gli equilibri europei e sancisce la sovranità degli Stati nazionali."
+        descrizione: "Insieme di trattati che pongono fine alla Guerra dei Trent'anni e ridisegnano gli equilibri politici e religiosi europei."
       }
     ];
 
@@ -601,7 +643,7 @@
         tick.style.left = x + "px";
         canvas.appendChild(tick);
 
-        if (isMajor || pixelsPerYear >= 16) {
+        if (isMajor || pixelsPerYear >= 17) {
           const label = document.createElement("div");
           label.className = "year-label";
           label.style.left = x + "px";
@@ -610,12 +652,11 @@
         }
       }
 
-      // Periodi e Governi
+      // Periodi (sopra l'asse)
       periodi.forEach((p) => {
         const left = (p.inizio - START_YEAR) * pixelsPerYear;
-        const width = Math.max((p.fine - p.inizio) * pixelsPerYear, 28);
-        const top = 30 + p.corsia * 52;
-        const durata = p.fine - p.inizio;
+        const width = Math.max((p.fine - p.inizio) * pixelsPerYear, 36);
+        const top = 16 + p.corsia * 44;
 
         const bar = document.createElement("div");
         bar.className = "period-bar";
@@ -623,16 +664,16 @@
         bar.style.width = width + "px";
         bar.style.top = top + "px";
         bar.style.backgroundColor = p.colore;
-        bar.title = `${p.titolo} (${p.inizio} - ${p.fine}, ${durata} anni)`;
+        bar.title = `${p.inizio} / ${p.fine} — ${p.titolo}`;
 
         bar.innerHTML = `
           <span class="period-title">${p.titolo}</span>
-          <span class="period-years">${p.inizio}–${p.fine}</span>
+          <span class="period-years">${p.inizio} / ${p.fine}</span>
         `;
 
         bar.addEventListener("click", () => {
           openModal(
-            `Periodo / Governo: ${p.inizio} – ${p.fine} (${durata} anni)`,
+            `${p.inizio} / ${p.fine}`,
             p.colore,
             p.titolo,
             p.descrizione
@@ -642,10 +683,11 @@
         canvas.appendChild(bar);
       });
 
-      // Eventi puntuali
+      // Eventi puntuali (sotto l'asse)
       eventi.forEach((ev) => {
         const left = (ev.anno - START_YEAR) * pixelsPerYear;
-        const stemHeight = ev.livello === 0 ? 28 : 114;
+        const stemHeights = [24, 96, 168];
+        const stemHeight = stemHeights[ev.livello] || 24;
 
         const marker = document.createElement("div");
         marker.className = "event-marker";
@@ -653,58 +695,4 @@
 
         marker.innerHTML = `
           <div class="event-dot" style="background: ${ev.colore}; box-shadow: 0 0 0 2px ${ev.colore};"></div>
-          <div class="event-stem" style="height: ${stemHeight}px;"></div>
-          <div class="event-card" style="border-left-color: ${ev.colore};">
-            <div class="event-year" style="color: ${ev.colore}; filter: brightness(1.35);">${ev.anno}</div>
-            <div class="event-name">${ev.titolo}</div>
-          </div>
-        `;
-
-        marker.addEventListener("click", () => {
-          openModal(`Evento: ${ev.anno}`, ev.colore, ev.titolo, ev.descrizione);
-        });
-
-        canvas.appendChild(marker);
-      });
-    }
-
-    document.getElementById("zoomIn").addEventListener("click", () => {
-      pixelsPerYear = Math.min(26, pixelsPerYear + 3);
-      renderTimeline();
-    });
-
-    document.getElementById("zoomOut").addEventListener("click", () => {
-      pixelsPerYear = Math.max(7, pixelsPerYear - 3);
-      renderTimeline();
-    });
-
-    document.getElementById("zoomReset").addEventListener("click", () => {
-      pixelsPerYear = 13;
-      renderTimeline();
-    });
-
-    // Scorrimento con trascinamento mouse
-    const scrollBox = document.getElementById("timelineScroll");
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    scrollBox.addEventListener("mousedown", (e) => {
-      isDown = true;
-      startX = e.pageX - scrollBox.offsetLeft;
-      scrollLeft = scrollBox.scrollLeft;
-    });
-    scrollBox.addEventListener("mouseleave", () => (isDown = false));
-    scrollBox.addEventListener("mouseup", () => (isDown = false));
-    scrollBox.addEventListener("mousemove", (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - scrollBox.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      scrollBox.scrollLeft = scrollLeft - walk;
-    });
-
-    renderTimeline();
-  </script>
-</body>
-</html>
+          <div class="event-
